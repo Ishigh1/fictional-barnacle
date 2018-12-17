@@ -1,4 +1,3 @@
-npm install --save discord.js
 "scripts": {
   "name": "activity_bot",
   "version": "1.0.0",
