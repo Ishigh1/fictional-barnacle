@@ -1,4 +1,4 @@
-"scripts": {
+{
   "name": "activity_bot",
   "version": "1.0.0",
   "description": "A bot to show the activity in a server",
@@ -20,5 +20,4 @@
   "dependencies": {
     "discord.js": "^11.3.0"
   }
-},
-"main": "node.js"
+}
