@@ -1,0 +1,5 @@
+npm install --save discord.js
+"scripts": {
+	"start": "bot.js"
+}, 
+"main": "node.js"
