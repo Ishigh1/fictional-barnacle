@@ -112,7 +112,7 @@ function last_message(member) {
 				activity_message = member.user.username + " n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
 		}
-		add_to_message(activity_message);
+		add_to_message(activity_message, member_number);
 	});
 }
 
