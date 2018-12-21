@@ -92,7 +92,7 @@ function last_message(member) {
 			member_last_message = result[0].Last_Message;
 		}
 		try {
-			activity_message = "Dernier post de " + member.user.username + " : le " + showdate(member.user.lastMessage.createdAt) + ".\n";
+			activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(member.user.lastMessage.createdAt) + ".\n";
 			if (typeof member_last_message !== 'undefined') {
 				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
 			}
@@ -108,10 +108,10 @@ function last_message(member) {
 			if (typeof member_last_message !== 'undefined') {
 				var time = new Date();
 				time.setTime(member_last_message);
-				activity_message = "Dernier post de " + member.user.username + " : le " + showdate(time) + ".\n";
+				activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(time) + ".\n";
 			}
 			else {
-				activity_message = member.user.username + " n'a pas envoyé de post depuis que le bot est en ligne.\n";
+				activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
 		}
 		add_to_message(activity_message, member_number);
