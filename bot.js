@@ -5,10 +5,10 @@ const client = new Discord.Client();
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	sql = mysql.createConnection({
-		host: "process.env.HOST",
-		user: "process.env.USER",
-		password: "process.env.PASS",
-		database: "process.env.DATABASE"
+		host: process.env.HOST,
+		user: process.env.USER,
+		password: process.env.PASS,
+		database: process.env.DATABASE
 	});
 
 	sql.connect(function (err) {
