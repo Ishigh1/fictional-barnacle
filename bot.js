@@ -119,7 +119,7 @@ function last_message(member) {
 }
 
 function last_message_filter(member) {
-	if (awakening.content.indexOf("member.user.username") == -1)
+	if (awakening.content.indexOf(member.user.username) == -1)
 	{
 		return;
 	}
