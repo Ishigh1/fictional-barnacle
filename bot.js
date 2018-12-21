@@ -17,11 +17,12 @@ client.on('ready', () => {
 	});
 });
 
-function add_to_message(text){
-	message.edit(message.content + "\n" + text)
-	.then(msg => 
-		{message = msg;})
-	.catch(console.error);
+function add_to_message(text, member_number){
+	message += text;
+	if(member_number == member_count)
+	{
+		channel_var.send(message);
+	};
 }
 
 function showdate(time) {
@@ -110,7 +111,7 @@ function last_message(member) {
 				activity_message = member.user.username + " n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
 		}
-		setTimeout(add_to_message, member_number*300, activity_message);
+		add_to_message(activity_message);
 	});
 }
 
@@ -120,10 +121,8 @@ client.on('message', msg => {
 			channel_var = msg.channel;
 			guild_var = msg.guild;
 			member_count = 0;
-			channel_var.send("Activité récente : ")
-			.then(msg2 => {message = msg2;
-				msg.guild.members.map(last_message);})
-			.catch(console.error);
+			message = "Activité récente : ";
+			msg.guild.members.map(last_message);
 			return;
 		}
 	}
@@ -134,7 +133,7 @@ client.on('message', msg => {
 });
 
 client.login(process.env.BOT_KEY);
+var message;
 var channel_var;
 var sql;
-var message;
 var member_count;
