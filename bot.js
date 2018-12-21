@@ -22,10 +22,13 @@ function add_to_message(text, member_number){
 	console.log(member_number);
 	if(member_number == member_count || message.length > 1900)
 	{
-		channel_var.send(message);
+		channel_var.send(message).then(sent_msg => {last_messages.push(sent_msg)});
 		message = "";
 	};
 }
+
+function delete_message(msg){
+	msg.delete()}
 
 function showdate(time) {
 	var time_text = "";
@@ -169,6 +172,7 @@ client.on('message', msg => {
 			guild_var = msg.guild;
 			member_count = 0;
 			message = "Activité récente : \n";
+			last_messages = [];
 			msg.guild.members.map(last_message);
 			return;
 		}
@@ -176,8 +180,13 @@ client.on('message', msg => {
 			channel_var = msg.channel;
 			guild_var = msg.guild;
 			member_count = 0;
+			last_messages = [];
 			message = "Activité récente : \n";
 			msg.guild.members.map(last_message_filter);
+			return;
+		}
+		else if (msg.content.indexOf("!delactivity") != -1) {
+			last_messages.map(delete_message);
 			return;
 		}
 	}
@@ -193,3 +202,4 @@ var channel_var;
 var sql;
 var member_count;
 var awakening;
+var last_messages;
