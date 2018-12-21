@@ -19,6 +19,7 @@ client.on('ready', () => {
 
 function add_to_message(text, member_number){
 	message += text;
+	console.log(member_number);
 	if(member_number == member_count)
 	{
 		channel_var.send(message);
