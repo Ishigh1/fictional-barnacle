@@ -187,6 +187,7 @@ client.on('message', msg => {
 		}
 		else if (msg.content.indexOf("!delactivity") != -1) {
 			last_messages.map(delete_message);
+			last_messages = [];
 			return;
 		}
 	}
