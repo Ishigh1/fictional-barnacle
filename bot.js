@@ -110,7 +110,7 @@ function last_message(member) {
 				activity_message = member.user.username + " n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
 		}
-		setTimeout(add_to_message, member_number*200, activity_message);
+		setTimeout(add_to_message, member_number*300, activity_message);
 	});
 }
 
