@@ -78,7 +78,7 @@ function showdate(time) {
 }
 
 function last_message(member) {
-	var member_number = member_count++;
+	var member_number = ++member_count;
 	var activity_message;
 	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
 		if (err) {
