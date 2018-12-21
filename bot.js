@@ -20,9 +20,10 @@ client.on('ready', () => {
 function add_to_message(text, member_number){
 	message += text;
 	console.log(member_number);
-	if(member_number == member_count)
+	if(member_number == member_count || message.length > 1900)
 	{
 		channel_var.send(message);
+		message = "";
 	};
 }
 
