@@ -18,7 +18,6 @@ client.on('ready', () => {
 });
 
 function add_to_message(text){
-	console.log(message.content);
 	message.edit(message.content + "\n" + text)
 	.then(msg => 
 		{message = msg;})
