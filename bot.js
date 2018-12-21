@@ -168,7 +168,7 @@ client.on('message', msg => {
 			channel_var = msg.channel;
 			guild_var = msg.guild;
 			member_count = 0;
-			message = "Activité récente : ";
+			message = "Activité récente : \n";
 			msg.guild.members.map(last_message);
 			return;
 		}
@@ -176,7 +176,7 @@ client.on('message', msg => {
 			channel_var = msg.channel;
 			guild_var = msg.guild;
 			member_count = 0;
-			message = "Activité récente : ";
+			message = "Activité récente : \n";
 			msg.guild.members.map(last_message_filter);
 			return;
 		}
