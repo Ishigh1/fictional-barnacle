@@ -20,6 +20,8 @@ client.on('ready', () => {
 function add_to_message(text){
 	message += text;
 	done++;
+	console.log(done);
+	console.log(member_count)
 	if(done == member_count || message.length > 1900)
 	{
 		channel_var.send(message).then(sent_msg => {last_messages.push(sent_msg)});
@@ -171,6 +173,7 @@ client.on('message', msg => {
 			channel_var = msg.channel;
 			guild_var = msg.guild;
 			member_count = 0;
+			done = 0;
 			message = "Activité récente : \n";
 			last_messages = [];
 			msg.guild.members.map(last_message);
@@ -180,6 +183,7 @@ client.on('message', msg => {
 			channel_var = msg.channel;
 			guild_var = msg.guild;
 			member_count = 0;
+			done = 0;
 			last_messages = [];
 			message = "Activité récente : \n";
 			msg.guild.members.map(last_message_filter);
