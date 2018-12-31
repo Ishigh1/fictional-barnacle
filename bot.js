@@ -19,7 +19,6 @@ client.on('ready', () => {
 
 function add_to_message(text){
 	message += text;
-	console.log(member_number);
 	done++;
 	if(done == member_count || message.length > 1900)
 	{
