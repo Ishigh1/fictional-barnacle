@@ -17,10 +17,11 @@ client.on('ready', () => {
 	});
 });
 
-function add_to_message(text, member_number){
+function add_to_message(text){
 	message += text;
 	console.log(member_number);
-	if(member_number == member_count || message.length > 1900)
+	done++;
+	if(done == member_count || message.length > 1900)
 	{
 		channel_var.send(message).then(sent_msg => {last_messages.push(sent_msg)});
 		message = "";
@@ -117,7 +118,7 @@ function last_message(member) {
 				activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
 		}
-		add_to_message(activity_message, member_number);
+		add_to_message(activity_message);
 	});
 }
 
@@ -160,7 +161,7 @@ function last_message_filter(member) {
 				activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
 		}
-		add_to_message(activity_message, member_number);
+		add_to_message(activity_message);
 	});
 }
 
@@ -204,3 +205,4 @@ var sql;
 var member_count;
 var awakening;
 var last_messages;
+var done;
