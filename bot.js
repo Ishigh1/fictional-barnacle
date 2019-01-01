@@ -308,7 +308,7 @@ client.on('message', msg => {
 			message = "Hey, ";
 			member_count = 0;
 			done = 0;
-			end_message = " **" + msg.author.username + "** veut jouer avec vous!";
+			end_message = ", **" + msg.author.username + "** veut jouer avec vous!";
 			last_messages = [];
 			msg.guild.members.map(ping_dispo);
 			return;
