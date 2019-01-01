@@ -265,6 +265,7 @@ client.on('message', msg => {
 			message = "Liste des gens dispo : \n";
 			member_count = 0;
 			done = 0;
+			console.log(msg.author.id);
 			dispo_list();
 			return;
 		}
