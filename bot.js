@@ -204,6 +204,7 @@ function is_dispo(result_line) {
 	if(result_line.Available == 0) {
 		return;
 	}
+	console.log(result_line);
 	member_count ++;
 	if (result_line.Available == 1) {
 		awakening.guild.fetchMember(result_line.Name_ID)
