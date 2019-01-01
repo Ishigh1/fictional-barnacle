@@ -20,8 +20,6 @@ client.on('ready', () => {
 function add_to_message(text){
 	message += text;
 	done++;
-	console.log(done);
-	console.log(member_count)
 	if(done == member_count || message.length > 1900)
 	{
 		channel_var.send(message).then(sent_msg => {last_messages.push(sent_msg)});
@@ -192,6 +190,40 @@ function dispo(member, value) {
 	});
 }
 
+function dispo_list() {
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + channel_var.guild.id, function (err, result, fields) {
+		if (err) {
+			throw err;
+		}
+		var prev_available;
+		result.map(is_dispo);
+	});
+}
+
+function is_dispo(result_line) {
+	if(result_line.Available == 0) {
+		return;
+	}
+	member_count ++;
+	if (result_line.Available == 1) {
+		channel_var.guild.fetchMember(result_line.Name_ID)
+			.then(member => 
+			     if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
+				add_to_message(member.user.username + ", ");
+			     }
+			     else {
+			        add_to_message("");
+			     })
+  			.catch(console.error);
+	}
+	else {
+		channel_var.guild.fetchMember(result_line.Name_ID)
+			.then(member => 
+			     add_to_message(member.user.username + ", "))
+  			.catch(console.error);
+	}
+}
+
 client.on('message', msg => {
 	try {
 		awakening = msg
@@ -230,6 +262,13 @@ client.on('message', msg => {
 		}
 		else if (msg.content.indexOf("!indispo") != -1) {
 			dispo(msg.member, 0);
+			return;
+		}
+		else if (msg.content.indexOf("!listdispo") != -1) {
+			message = "Liste des gens dispo : \n";
+			member_count = 0;
+			done = 0;
+			dispo_list();
 			return;
 		}
 	}
