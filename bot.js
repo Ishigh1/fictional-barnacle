@@ -210,10 +210,10 @@ function is_dispo(result_line) {
 			.then(member => {
 			     if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
 				add_to_message(member.user.username + ", ");
-			     }}
+			     }
 			     else {
 			        add_to_message("");
-			     })
+			     }})
   			.catch(console.error);
 	}
 	else {
