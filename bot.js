@@ -88,7 +88,6 @@ function last_message(member) {
 		return;
 	}
 	member_count ++;
-	var member_number = member_count;
 	var activity_message;
 	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
 		if (err) {
@@ -131,7 +130,6 @@ function last_message_filter(member) {
 		return;
 	}
 	member_count ++;
-	var member_number = member_count;
 	var activity_message;
 	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
 		if (err) {
@@ -190,39 +188,36 @@ function dispo(member, value) {
 	});
 }
 
-function dispo_list() {
-	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + awakening.channel.guild.id, function (err, result, fields) {
+function is_dispo(member) {
+	if (member.user.bot) {
+		return;
+	}
+	member_count ++;
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
 		if (err) {
 			throw err;
 		}
-		var prev_available;
-		result.map(is_dispo);
-	});
-}
-
-function is_dispo(result_line) {
-	if(result_line.Available == 0) {
-		return;
-	}
-	console.log(result_line.Name_ID);
-	member_count ++;
-	if (result_line.Available == 1) {
-		awakening.guild.fetchMember(result_line.Name_ID)
-			.then(member => {
-			     if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
+		var is_available
+		if (typeof result[0] !== 'undefined') {
+			is_available = result[0].Available;
+		}
+		if (typeof is_available !== 'undefined' || is_available == 0) {
+			if(is_available == 1) {
+				if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
+					add_to_message(member.user.username + ", ");
+				}
+				else {
+					add_to_message("");
+				}
+			}
+			else {
 				add_to_message(member.user.username + ", ");
-			     }
-			     else {
-			        add_to_message("");
-			     }})
-  			.catch(console.error);
-	}
-	else {
-		awakening.guild.fetchMember(result_line.Name_ID)
-			.then(member => 
-			     add_to_message(member.user.username + ", "))
-  			.catch(console.error);
-	}
+			}
+		}
+		else {
+			add_to_message("");
+		}
+	});
 }
 
 client.on('message', msg => {
@@ -265,9 +260,7 @@ client.on('message', msg => {
 			message = "Liste des gens dispo : \n";
 			member_count = 0;
 			done = 0;
-			console.log(msg.author.id);
-			console.log(msg.member.id);
-			dispo_list();
+			msg.guild.members.map(is_dispo);
 			return;
 		}
 	}
