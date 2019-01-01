@@ -106,7 +106,7 @@ function last_message(member) {
 				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
 			}
 			else {
-				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ")", function (err) {
+				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", 0)", function (err) {
 					if (err) {
 						throw err;
 					}
@@ -149,7 +149,7 @@ function last_message_filter(member) {
 				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
 			}
 			else {
-				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ")", function (err) {
+				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", 0)", function (err) {
 					if (err) {
 						throw err;
 					}
@@ -165,6 +165,29 @@ function last_message_filter(member) {
 			else {
 				activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
 			}
+		}
+		add_to_message(activity_message);
+	});
+}
+
+function dispo(member, value) {
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
+		if (err) {
+			throw err;
+		}
+		var prev_available;
+		if (typeof result[0] !== 'undefined') {
+			prev_available = result[0].Available;
+		}
+		if (typeof prev_available !== 'undefined') {
+			sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + ", `Available` = " + value + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
+		}
+		else {
+			sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", " + value +")", function (err) {
+				if (err) {
+					throw err;
+				}
+			});
 		}
 		add_to_message(activity_message);
 	});
@@ -196,6 +219,18 @@ client.on('message', msg => {
 		else if (msg.content.indexOf("!delactivity") != -1) {
 			last_messages.map(delete_message);
 			last_messages = [];
+			return;
+		}
+		else if (msg.content.indexOf("!dispo") != -1) {
+			dispo(msg.member, 1);
+			return;
+		}
+		else if (msg.content.indexOf("!Sdispo") != -1) {
+			dispo(msg.member, 2);
+			return;
+		}
+		else if (msg.content.indexOf("!indispo") != -1) {
+			dispo(msg.member, 0);
 			return;
 		}
 	}
