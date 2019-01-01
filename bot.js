@@ -20,11 +20,16 @@ client.on('ready', () => {
 function add_to_message(text){
 	message += text;
 	done++;
-	if(done == member_count || message.length > 1900)
+	if (message.length + end_message.length > 1900)
 	{
 		awakening.channel.send(message).then(sent_msg => {last_messages.push(sent_msg)});
 		message = "";
-	};
+	}
+	else if (done == member_count)
+	{
+		awakening.channel.send(message + end_message).then(sent_msg => {last_messages.push(sent_msg)});
+		message = "";
+	}
 }
 
 function delete_message(msg){
@@ -205,7 +210,40 @@ function is_dispo(member) {
 		if (typeof is_available !== 'undefined' && is_available !== 0) {
 			if(is_available == 1) {
 				if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
-					add_to_message(member.user.username + ", ");
+					add_to_message("**" + member.user.username + "**\n");
+				}
+				else {
+					add_to_message("");
+				}
+			}
+			else {
+				add_to_message(member.user.username + ", ");
+			}
+		}
+		else {
+			add_to_message("");
+		}
+	});
+}
+
+function ping_dispo(member) {
+	if (member.user.bot) {
+		return;
+	}
+	member_count ++;
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
+		if (err) {
+			throw err;
+		}
+		var is_available
+		if (typeof result[0] !== 'undefined') {
+			is_available = result[0].Available;
+		}
+		console.log(is_available);
+		if (typeof is_available !== 'undefined' && is_available !== 0) {
+			if(is_available == 1) {
+				if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
+					add_to_message(member);
 				}
 				else {
 					add_to_message("");
@@ -229,6 +267,7 @@ client.on('message', msg => {
 			done = 0;
 			message = "Activité récente : \n";
 			last_messages = [];
+			end_message = "";
 			msg.guild.members.map(last_message);
 			return;
 		}
@@ -236,6 +275,7 @@ client.on('message', msg => {
 			member_count = 0;
 			done = 0;
 			last_messages = [];
+			end_message = "";
 			message = "Activité récente : \n";
 			msg.guild.members.map(last_message_filter);
 			return;
@@ -261,7 +301,16 @@ client.on('message', msg => {
 			message = "Liste des gens dispo : \n";
 			member_count = 0;
 			done = 0;
+			end_message = "";
 			msg.guild.members.map(is_dispo);
+			return;
+		}
+		else if (msg.content.indexOf("!listdispo") != -1) {
+			message = "Hey, ";
+			member_count = 0;
+			done = 0;
+			end_message = "**" + msg.author.username + "** veut jouer avec vous!";
+			msg.guild.members.map(ping_dispo);
 			return;
 		}
 	}
@@ -273,6 +322,7 @@ client.on('message', msg => {
 
 client.login(process.env.BOT_KEY);
 var message;
+var end_message;
 var sql;
 var member_count;
 var awakening;
