@@ -22,7 +22,7 @@ function add_to_message(text){
 	done++;
 	if(done == member_count || message.length > 1900)
 	{
-		channel_var.send(message).then(sent_msg => {last_messages.push(sent_msg)});
+		awakening.channel.send(message).then(sent_msg => {last_messages.push(sent_msg)});
 		message = "";
 	};
 }
@@ -191,7 +191,7 @@ function dispo(member, value) {
 }
 
 function dispo_list() {
-	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + channel_var.guild.id, function (err, result, fields) {
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + awakening.channel.guild.id, function (err, result, fields) {
 		if (err) {
 			throw err;
 		}
@@ -206,7 +206,7 @@ function is_dispo(result_line) {
 	}
 	member_count ++;
 	if (result_line.Available == 1) {
-		channel_var.guild.fetchMember(result_line.Name_ID)
+		awakening.guild.fetchMember(result_line.Name_ID)
 			.then(member => {
 			     if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
 				add_to_message(member.user.username + ", ");
@@ -217,7 +217,7 @@ function is_dispo(result_line) {
   			.catch(console.error);
 	}
 	else {
-		channel_var.guild.fetchMember(result_line.Name_ID)
+		awakening.guild.fetchMember(result_line.Name_ID)
 			.then(member => 
 			     add_to_message(member.user.username + ", "))
   			.catch(console.error);
@@ -228,8 +228,6 @@ client.on('message', msg => {
 	try {
 		awakening = msg
 		if (msg.content.indexOf("!activity") != -1) {
-			channel_var = msg.channel;
-			guild_var = msg.guild;
 			member_count = 0;
 			done = 0;
 			message = "Activité récente : \n";
@@ -238,8 +236,6 @@ client.on('message', msg => {
 			return;
 		}
 		else if (msg.content.indexOf("!factivity") != -1) {
-			channel_var = msg.channel;
-			guild_var = msg.guild;
 			member_count = 0;
 			done = 0;
 			last_messages = [];
@@ -280,7 +276,6 @@ client.on('message', msg => {
 
 client.login(process.env.BOT_KEY);
 var message;
-var channel_var;
 var sql;
 var member_count;
 var awakening;
