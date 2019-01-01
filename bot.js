@@ -86,6 +86,9 @@ function showdate(time) {
 }
 
 function last_message(member) {
+	if (member.user.bot) {
+		return;
+	}
 	member_count ++;
 	var member_number = member_count;
 	var activity_message;
