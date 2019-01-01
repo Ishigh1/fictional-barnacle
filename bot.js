@@ -189,7 +189,6 @@ function dispo(member, value) {
 				}
 			});
 		}
-		add_to_message(activity_message);
 	});
 }
 
