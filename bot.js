@@ -201,6 +201,7 @@ function is_dispo(member) {
 		if (typeof result[0] !== 'undefined') {
 			is_available = result[0].Available;
 		}
+		console.log(is_available);
 		if (typeof is_available !== 'undefined' || is_available == 0) {
 			if(is_available == 1) {
 				if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
