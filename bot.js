@@ -216,7 +216,7 @@ function is_dispo(member) {
 				}
 			}
 			else {
-				add_to_message(member.user.username + ", ");
+				add_to_message("**" + member.user.username + "**\n");
 			}
 		}
 		else {
@@ -248,7 +248,7 @@ function ping_dispo(member) {
 				}
 			}
 			else {
-				add_to_message(member.user.username + ", ");
+				add_to_message(member);
 			}
 		}
 		else {
