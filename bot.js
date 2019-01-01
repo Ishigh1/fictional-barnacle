@@ -305,7 +305,7 @@ client.on('message', msg => {
 			msg.guild.members.map(is_dispo);
 			return;
 		}
-		else if (msg.content.indexOf("!listdispo") != -1) {
+		else if (msg.content.indexOf("!pingdispo") != -1) {
 			message = "Hey, ";
 			member_count = 0;
 			done = 0;
