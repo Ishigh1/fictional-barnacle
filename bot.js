@@ -266,6 +266,7 @@ client.on('message', msg => {
 			member_count = 0;
 			done = 0;
 			console.log(msg.author.id);
+			console.log(msg.member.id);
 			dispo_list();
 			return;
 		}
