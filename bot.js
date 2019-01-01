@@ -207,10 +207,10 @@ function is_dispo(result_line) {
 	member_count ++;
 	if (result_line.Available == 1) {
 		channel_var.guild.fetchMember(result_line.Name_ID)
-			.then(member => 
+			.then(member => {
 			     if(member.user.presence.status == "online" || member.user.presence.status == "idle") {
 				add_to_message(member.user.username + ", ");
-			     }
+			     }}
 			     else {
 			        add_to_message("");
 			     })
