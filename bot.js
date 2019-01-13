@@ -20,13 +20,11 @@ client.on('ready', () => {
 function add_to_message(text){
 	message += text;
 	done++;
-	if (message.length + end_message.length > 1900)
-	{
+	if (message.length + end_message.length > 1900){
 		awakening.channel.send(message).then(sent_msg => {last_messages.push(sent_msg)});
 		message = "";
 	}
-	else if (done == member_count)
-	{
+	else if (done == member_count){
 		awakening.channel.send(message + end_message).then(sent_msg => {last_messages.push(sent_msg)});
 		message = "";
 	}
