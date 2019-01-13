@@ -102,28 +102,13 @@ function last_message(member) {
 		if (typeof result[0] !== 'undefined') {
 			member_last_message = result[0].Last_Message;
 		}
-		try {
-			activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(member.user.lastMessage.createdAt) + ".\n";
-			if (typeof member_last_message !== 'undefined') {
-				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
-			}
-			else {
-				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", 0)", function (err) {
-					if (err) {
-						throw err;
-					}
-				});
-			}
+		if (typeof member_last_message !== 'undefined') {
+			var time = new Date();
+			time.setTime(member_last_message);
+			activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(time) + ".\n";
 		}
-		catch (e) {
-			if (typeof member_last_message !== 'undefined') {
-				var time = new Date();
-				time.setTime(member_last_message);
-				activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(time) + ".\n";
-			}
-			else {
-				activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
-			}
+		else {
+			activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
 		}
 		add_to_message(activity_message);
 	});
@@ -144,28 +129,13 @@ function last_message_filter(member) {
 		if (typeof result[0] !== 'undefined') {
 			member_last_message = result[0].Last_Message;
 		}
-		try {
-			activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(member.user.lastMessage.createdAt) + ".\n";
-			if (typeof member_last_message !== 'undefined') {
-				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
-			}
-			else {
-				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", 0)", function (err) {
-					if (err) {
-						throw err;
-					}
-				});
-			}
+		if (typeof member_last_message !== 'undefined') {
+			var time = new Date();
+			time.setTime(member_last_message);
+			activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(time) + ".\n";
 		}
-		catch (e) {
-			if (typeof member_last_message !== 'undefined') {
-				var time = new Date();
-				time.setTime(member_last_message);
-				activity_message = "Dernier post de **" + member.user.username + "** : le " + showdate(time) + ".\n";
-			}
-			else {
-				activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
-			}
+		else {
+			activity_message = "**" + member.user.username + "** n'a pas envoyé de post depuis que le bot est en ligne.\n";
 		}
 		add_to_message(activity_message);
 	});
@@ -259,6 +229,16 @@ function ping_dispo(member) {
 
 client.on('message', msg => {
 	try {
+		if (typeof result[0] !== 'undefined') {
+			sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + ", `Available` = 0 WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
+		}
+		else {
+			sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", " + value +")", function (err) {
+				if (err) {
+					throw err;
+				}
+			});
+		}
 		awakening = msg
 		if (msg.content.indexOf("!activity") != -1) {
 			member_count = 0;
