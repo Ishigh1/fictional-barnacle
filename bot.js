@@ -238,8 +238,8 @@ client.on('message', msg => {
 					}
 				});
 			}
-		}
-		awakening = msg
+		});
+		awakening = msg;
 		if (msg.content.indexOf("!activity") != -1) {
 			member_count = 0;
 			done = 0;
