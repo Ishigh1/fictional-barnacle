@@ -227,18 +227,16 @@ function ping_dispo(member) {
 
 client.on('message', msg => {
 	try {
-		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
-			if (typeof result[0] !== 'undefined') {
-				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + ", `Available` = 0 WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
-			}
-			else {
-				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", " + value +")", function (err) {
-					if (err) {
-						throw err;
-					}
-				});
-			}
-		});
+		if (typeof result[0] !== 'undefined') {
+			sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + msg.member.user.lastMessage.createdAt.getTime() + ", `Available` = 0 WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err) { if (err) throw err; });
+		}
+		else {
+			sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + msg.member.guild.id + ", " + msg.member.id + ", " + msg.member.user.lastMessage.createdAt.getTime() + ", " + value +")", function (err) {
+				if (err) {
+					throw err;
+				}
+			});
+		}
 		awakening = msg;
 		if (msg.content.indexOf("!activity") != -1) {
 			member_count = 0;
