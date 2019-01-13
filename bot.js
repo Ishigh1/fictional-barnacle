@@ -227,7 +227,7 @@ function ping_dispo(member) {
 
 client.on('message', msg => {
 	try {
-		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
+		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
 			if (typeof result[0] !== 'undefined') {
 				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + msg.member.user.lastMessage.createdAt.getTime() + ", `Available` = 0 WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err) { if (err) throw err; });
 			}
