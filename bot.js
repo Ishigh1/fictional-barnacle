@@ -254,6 +254,20 @@ function master_filter(member) {
 	sql.query("UPDATE `Activity_bot` SET `Master` = 1 WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
 }
 
+function count_message(msg) {
+	member_count++;
+	if(member_list[msg.author.username] !== 'undefined') {
+		member_list[msg.author.username]++;
+	}
+	else{
+		member_list[msg.author.username] = 1;
+	}
+	done++;
+	if(done == member_count){
+		console.log(member_list);
+	}
+}
+
 client.on('message', msg => {
 	try {
 		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
@@ -347,6 +361,26 @@ client.on('message', msg => {
 			master(msg);
 			return;
 		}
+		else if (msg.content.indexOf("!flood") != -1) {
+			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
+				if (err) {
+					throw err;
+				}
+				if(result[0].Master){
+					message = "Voilà les plus gros spammeurs : \n";
+					member_count = 0;
+					done = 0;
+					end_message = "";
+					last_messages = [];
+					member_list = [];
+					msg.guild.channels.map({channel => 
+							       channel.fetchMessages()
+  								.then(messages => messages.map(count_message))
+  								.catch(console.error);});
+				}
+				return;
+			})
+		}
 	}
 	catch (e) {
 		console.error(e);
@@ -362,3 +396,4 @@ var member_count;
 var awakening;
 var last_messages;
 var done;
+var member_list;
