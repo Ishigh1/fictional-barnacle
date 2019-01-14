@@ -152,7 +152,7 @@ function dispo(member, value) {
 			sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + member.user.lastMessage.createdAt.getTime() + ", `Available` = " + value + " WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
 		}
 		else {
-			sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", " + value +")", function (err) {
+			sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`, `Master`) VALUES (" + member.guild.id + ", " + member.id + ", " + member.user.lastMessage.createdAt.getTime() + ", 0, 0)", function (err) {
 				if (err) {
 					throw err;
 				}
@@ -225,6 +225,46 @@ function ping_dispo(member) {
 	});
 }
 
+function master() {
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + awakening.member.guild.id + " AND `Name_ID` = " + awakening.member.id, function (err, result, fields) {
+		if (err) {
+			throw err;
+		}
+		if (result[0].Master) {
+			msg.guild.members.map(master_filter);
+		}
+		else {
+			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + awakening.member.guild.id + " AND `Master` = 1", function (err, result, fields) {
+				if (err) {
+					throw err;
+				}
+				if (typeof result[0] == 'undefined') {
+					msg.guild.members.map(master_filter);
+				}
+			});
+		}
+	});
+}
+
+function master_filter(member) {
+	if (awakening.content.indexOf(member.user.username) == -1)
+	{
+		return;
+	}
+	sql.query("UPDATE `Activity_bot` SET `Master` = 1 WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
+}
+
+function is_master(member)
+{
+	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
+		if (err) {
+			throw err;
+		}
+		var prev_available;
+		return result[0].Master;
+	});
+}
+
 client.on('message', msg => {
 	try {
 		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
@@ -232,7 +272,7 @@ client.on('message', msg => {
 				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + msg.member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err) { if (err) throw err; });
 			}
 			else {
-				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`) VALUES (" + msg.member.guild.id + ", " + msg.member.id + ", " + msg.member.user.lastMessage.createdAt.getTime() + ", " + value +")", function (err) {
+				sql.query("INSERT INTO `Activity_bot` (`Server_ID`, `Name_ID`, `Last_Message`, `Available`, `Master`) VALUES (" + msg.member.guild.id + ", " + msg.member.id + ", " + msg.member.user.lastMessage.createdAt.getTime() + ", 0, 0)", function (err) {
 					if (err) {
 						throw err;
 					}
@@ -258,7 +298,7 @@ client.on('message', msg => {
 			msg.guild.members.map(last_message_filter);
 			return;
 		}
-		else if (msg.content.indexOf("!delactivity") != -1) {
+		else if (msg.content.indexOf("!delactivity") != -1 && is_master(msg.member)) {
 			last_messages.map(delete_message);
 			last_messages = [];
 			return;
@@ -291,6 +331,10 @@ client.on('message', msg => {
 			end_message = ", **" + msg.author.username + "** veut jouer avec vous!";
 			last_messages = [];
 			msg.guild.members.map(ping_dispo);
+			return;
+		}
+		else if (msg.content.indexOf("!master") != -1) {
+			master(msg);
 			return;
 		}
 	}
