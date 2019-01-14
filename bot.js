@@ -256,11 +256,14 @@ function master_filter(member) {
 
 function is_master(member)
 {
+	console.log(1)
 	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
 		if (err) {
 			throw err;
 		}
 		var prev_available;
+		console.log(result[0]);
+		console.log(result[0].Master);
 		return result[0].Master;
 	});
 }
@@ -299,6 +302,7 @@ client.on('message', msg => {
 			return;
 		}
 		else if (msg.content.indexOf("!delactivity") != -1 && is_master(msg.member)) {
+			console.log(2);
 			last_messages.map(delete_message);
 			last_messages = [];
 			return;
