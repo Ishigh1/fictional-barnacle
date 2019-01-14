@@ -288,7 +288,7 @@ client.on('message', msg => {
 			return;
 		}
 		else if (msg.content.indexOf("!delactivity") != -1) {
-			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
+			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
 				if (err) {
 					throw err;
 				}
