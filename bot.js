@@ -373,10 +373,10 @@ client.on('message', msg => {
 					end_message = "";
 					last_messages = [];
 					member_list = [];
-					msg.guild.channels.map({channel => 
+					msg.guild.channels.map(channel => 
 							       channel.fetchMessages()
   								.then(messages => messages.map(count_message))
-  								.catch(console.error);});
+  								.catch(console.error););
 				}
 				return;
 			})
