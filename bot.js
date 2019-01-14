@@ -270,13 +270,20 @@ client.on('message', msg => {
 		});
 		awakening = msg;
 		if (msg.content.indexOf("!activity") != -1) {
-			member_count = 0;
-			done = 0;
-			message = "Activité récente : \n";
-			last_messages = [];
-			end_message = "";
-			msg.guild.members.map(last_message);
-			return;
+			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
+				if (err) {
+					throw err;
+				}
+				if(result[0].Master){
+					member_count = 0;
+					done = 0;
+					message = "Activité récente : \n";
+					last_messages = [];
+					end_message = "";
+					msg.guild.members.map(last_message);
+				}
+				return;
+			});
 		}
 		else if (msg.content.indexOf("!factivity") != -1) {
 			member_count = 0;
@@ -292,13 +299,12 @@ client.on('message', msg => {
 				if (err) {
 					throw err;
 				}
-				var prev_available;
 				if(result[0].Master){
 					last_messages.map(delete_message);
 					last_messages = [];
 				}
+				return;
 			});
-			return;
 		}
 		else if (msg.content.indexOf("!dispo") != -1) {
 			dispo(msg.member, 1);
