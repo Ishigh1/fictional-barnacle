@@ -254,18 +254,6 @@ function master_filter(member) {
 	sql.query("UPDATE `Activity_bot` SET `Master` = 1 WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err) { if (err) throw err; });
 }
 
-function is_master(member)
-{
-	console.log(1)
-	sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
-		if (err) {
-			throw err;
-		}
-		var prev_available;
-		return result[0].Master == 1;
-	});
-}
-
 client.on('message', msg => {
 	try {
 		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
@@ -299,9 +287,17 @@ client.on('message', msg => {
 			msg.guild.members.map(last_message_filter);
 			return;
 		}
-		else if (msg.content.indexOf("!delactivity") != -1 && is_master(msg.member)) {
-			last_messages.map(delete_message);
-			last_messages = [];
+		else if (msg.content.indexOf("!delactivity") != -1) {
+			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + member.guild.id + " AND `Name_ID` = " + member.id, function (err, result, fields) {
+				if (err) {
+					throw err;
+				}
+				var prev_available;
+				if(result[0].Master){
+					last_messages.map(delete_message);
+					last_messages = [];
+				}
+			});
 			return;
 		}
 		else if (msg.content.indexOf("!dispo") != -1) {
