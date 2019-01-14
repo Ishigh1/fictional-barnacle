@@ -256,7 +256,7 @@ function master_filter(member) {
 
 function count_message(msg) {
 	member_count++;
-	if(member_list[msg.author.username] !== 'undefined') {
+	if(member_list[msg.author.username] !== 'NaN') {
 		member_list[msg.author.username]++;
 	}
 	else{
