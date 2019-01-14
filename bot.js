@@ -264,7 +264,7 @@ function count_message(msg) {
 	}
 	done++;
 	if(done == member_count){
-		console.log(member_list);
+		console.log(1);
 	}
 }
 
