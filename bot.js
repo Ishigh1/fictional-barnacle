@@ -376,7 +376,7 @@ client.on('message', msg => {
 					msg.guild.channels.map(channel => 
 							       channel.fetchMessages()
   								.then(messages => messages.map(count_message))
-  								.catch(console.error););
+  								.catch(console.error));
 				}
 				return;
 			})
