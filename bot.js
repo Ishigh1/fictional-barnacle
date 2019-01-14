@@ -286,13 +286,20 @@ client.on('message', msg => {
 			});
 		}
 		else if (msg.content.indexOf("!factivity") != -1) {
-			member_count = 0;
-			done = 0;
-			last_messages = [];
-			end_message = "";
-			message = "Activité récente : \n";
-			msg.guild.members.map(last_message_filter);
-			return;
+			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
+				if (err) {
+					throw err;
+				}
+				if(result[0].Master){
+					member_count = 0;
+					done = 0;
+					last_messages = [];
+					end_message = "";
+					message = "Activité récente : \n";
+					msg.guild.members.map(last_message_filter);
+				}
+				return;
+			});
 		}
 		else if (msg.content.indexOf("!delactivity") != -1) {
 			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
