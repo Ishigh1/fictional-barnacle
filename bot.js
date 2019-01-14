@@ -374,9 +374,11 @@ client.on('message', msg => {
 					last_messages = [];
 					member_list = [];
 					msg.guild.channels.map(channel => 
-							       channel.fetchMessages()
-  								.then(messages => messages.map(count_message))
-  								.catch(console.error));
+							       if(channel.type == "text"){
+								       channel.fetchMessages()
+  									.then(messages => messages.map(count_message))
+  									.catch(console.error)
+								});
 				}
 				return;
 			})
