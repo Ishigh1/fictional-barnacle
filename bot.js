@@ -231,7 +231,7 @@ function master() {
 			throw err;
 		}
 		if (result[0].Master) {
-			msg.guild.members.map(master_filter);
+			awakening.guild.members.map(master_filter);
 		}
 		else {
 			sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + awakening.member.guild.id + " AND `Master` = 1", function (err, result, fields) {
@@ -239,7 +239,7 @@ function master() {
 					throw err;
 				}
 				if (typeof result[0] == 'undefined') {
-					msg.guild.members.map(master_filter);
+					awakening.guild.members.map(master_filter);
 				}
 			});
 		}
