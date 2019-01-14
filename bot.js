@@ -262,9 +262,7 @@ function is_master(member)
 			throw err;
 		}
 		var prev_available;
-		console.log(result[0]);
-		console.log(result[0].Master);
-		return result[0].Master;
+		return result[0].Master == 1;
 	});
 }
 
@@ -302,7 +300,6 @@ client.on('message', msg => {
 			return;
 		}
 		else if (msg.content.indexOf("!delactivity") != -1 && is_master(msg.member)) {
-			console.log(2);
 			last_messages.map(delete_message);
 			last_messages = [];
 			return;
