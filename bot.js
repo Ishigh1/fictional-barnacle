@@ -386,7 +386,8 @@ client.on('message', msg => {
 		}
 		else if (msg.content.indexOf("!birthday") != -1) {
 			var date = scanf('!birthday %d/%d/%d');
-			msg.channel.send(showdate(date));
+			console.log(date);
+			//msg.channel.send(showdate(date));
 		}
 	}
 	catch (e) {
