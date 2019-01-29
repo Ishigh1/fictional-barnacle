@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const mysql = require('mysql');
 const client = new Discord.Client();
-var scanf = require('scanf');
+const scanf = require('scanf');
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
