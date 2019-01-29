@@ -268,6 +268,11 @@ function count_message(msg) {
 	}
 }
 
+function parseDate(str) {
+  var m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  return (m) ? new Date(m[3], m[2]-1, m[1]) : null;
+}
+
 client.on('message', msg => {
 	try {
 		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
@@ -384,7 +389,7 @@ client.on('message', msg => {
 			})
 		}
 		else if (msg.content.indexOf("!birthday") != -1) {
-			
+			console.log(parseDate(msg.content));
 			//msg.channel.send(showdate(date));
 		}
 	}
