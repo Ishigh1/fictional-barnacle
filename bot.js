@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const mysql = require('mysql');
 const client = new Discord.Client();
-const scanf = require('scanf');
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -385,9 +384,7 @@ client.on('message', msg => {
 			})
 		}
 		else if (msg.content.indexOf("!birthday") != -1) {
-			//var date = scanf("!birthday %d/%d/%d");
-			//console.log(date);
-			console.log(scanf("!birthday %d-%d-%d"));
+			
 			//msg.channel.send(showdate(date));
 		}
 	}
