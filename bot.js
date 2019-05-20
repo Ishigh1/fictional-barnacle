@@ -392,11 +392,11 @@ client.on('message', msg => {
 			console.log(parseDate(msg.content));
 			//msg.channel.send(showdate(date));
 		}
-	}}
+	}
 	catch (e) {
 		console.error(e);
 		msg.channel.send("BUUUG");
-	}
+	}}
 });
 
 client.login(process.env.BOT_KEY);
