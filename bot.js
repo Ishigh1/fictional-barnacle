@@ -274,7 +274,7 @@ function parseDate(str) {
 }
 
 client.on('message', msg => {
-	if(msg.channel.type == "text"{try {
+	if(msg.channel.type == "text") {try {
 		sql.query("SELECT * FROM `Activity_bot` WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err, result, fields) {
 			if (typeof result[0] !== 'undefined') {
 				sql.query("UPDATE `Activity_bot` SET `Last_Message` = " + msg.member.user.lastMessage.createdAt.getTime() + " WHERE `Server_ID` = " + msg.member.guild.id + " AND `Name_ID` = " + msg.member.id, function (err) { if (err) throw err; });
